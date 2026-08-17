@@ -140,6 +140,7 @@ class ComposerStaticInit28644794df27ea35b4ba3d9e834307a8
         'M' =>
         array (
             'Monolog\\' => 8,
+            'Modules\\' => 8,
             'Mockery\\' => 8,
         ),
         'L' =>
@@ -470,6 +471,10 @@ class ComposerStaticInit28644794df27ea35b4ba3d9e834307a8
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
+        'Modules\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/modules',
+        ),
         'Mockery\\' =>
         array (
             0 => __DIR__ . '/..' . '/mockery/mockery/library/Mockery',
@@ -672,7 +677,6 @@ class ComposerStaticInit28644794df27ea35b4ba3d9e834307a8
         'App\\Actions\\Fortify\\ResetUserPassword' => __DIR__ . '/../..' . '/app/Actions/Fortify/ResetUserPassword.php',
         'App\\Concerns\\PasswordValidationRules' => __DIR__ . '/../..' . '/app/Concerns/PasswordValidationRules.php',
         'App\\Concerns\\ProfileValidationRules' => __DIR__ . '/../..' . '/app/Concerns/ProfileValidationRules.php',
-        'App\\Console\\Commands\\InstallFeaturesCommand' => __DIR__ . '/../..' . '/app/Console/Commands/InstallFeaturesCommand.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\Settings\\ProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/Settings/ProfileController.php',
         'App\\Http\\Controllers\\Settings\\SecurityController' => __DIR__ . '/../..' . '/app/Http/Controllers/Settings/SecurityController.php',
@@ -4531,6 +4535,23 @@ class ComposerStaticInit28644794df27ea35b4ba3d9e834307a8
         'Mockery\\Undefined' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Undefined.php',
         'Mockery\\VerificationDirector' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationDirector.php',
         'Mockery\\VerificationExpectation' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationExpectation.php',
+        'Modules\\Product\\Http\\Controllers\\ProductCategoryController' => __DIR__ . '/../..' . '/modules/Product/Http/Controllers/ProductCategoryController.php',
+        'Modules\\Product\\Http\\Controllers\\ProductController' => __DIR__ . '/../..' . '/modules/Product/Http/Controllers/ProductController.php',
+        'Modules\\Product\\Http\\Requests\\ProductCategoryRequest' => __DIR__ . '/../..' . '/modules/Product/Http/Requests/ProductCategoryRequest.php',
+        'Modules\\Product\\Http\\Requests\\ProductRequest' => __DIR__ . '/../..' . '/modules/Product/Http/Requests/ProductRequest.php',
+        'Modules\\Product\\Http\\Resources\\ProductHomePageResource' => __DIR__ . '/../..' . '/modules/Product/Http/Resources/ProductHomePageResource.php',
+        'Modules\\Product\\Http\\Resources\\ProductIndexPageResource' => __DIR__ . '/../..' . '/modules/Product/Http/Resources/ProductIndexPageResource.php',
+        'Modules\\Product\\Models\\Product' => __DIR__ . '/../..' . '/modules/Product/Models/Product.php',
+        'Modules\\Product\\Models\\ProductCategory' => __DIR__ . '/../..' . '/modules/Product/Models/ProductCategory.php',
+        'Modules\\Product\\Models\\ProductImage' => __DIR__ . '/../..' . '/modules/Product/Models/ProductImage.php',
+        'Modules\\Product\\Providers\\ProductServiceProvider' => __DIR__ . '/../..' . '/modules/Product/Providers/ProductServiceProvider.php',
+        'Modules\\Product\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/modules/Product/Providers/RouteServiceProvider.php',
+        'Modules\\User\\Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/modules/User/Database/Seeders/UserSeeder.php',
+        'Modules\\User\\Enums\\UserRoles' => __DIR__ . '/../..' . '/modules/User/Enums/UserRoles.php',
+        'Modules\\User\\Enums\\UserStatuses' => __DIR__ . '/../..' . '/modules/User/Enums/UserStatuses.php',
+        'Modules\\User\\Models\\User' => __DIR__ . '/../..' . '/modules/User/Models/User.php',
+        'Modules\\User\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/modules/User/Providers/RouteServiceProvider.php',
+        'Modules\\User\\Providers\\UserServiceProvider' => __DIR__ . '/../..' . '/modules/User/Providers/UserServiceProvider.php',
         'Monolog\\Attribute\\AsMonologProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Attribute/AsMonologProcessor.php',
         'Monolog\\Attribute\\WithMonologChannel' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Attribute/WithMonologChannel.php',
         'Monolog\\DateTimeImmutable' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/DateTimeImmutable.php',
