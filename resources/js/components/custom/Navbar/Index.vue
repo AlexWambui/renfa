@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, watch, onMounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { Sun, Moon, ShoppingCart } from '@lucide/vue';
+import { Sun, Moon } from '@lucide/vue';
+import { computed } from 'vue';
+import AppLogo from '@/components/AppLogo.vue';
 import { useAppearance } from '@/composables/useAppearance';
 
 const { appearance, updateAppearance } = useAppearance();
@@ -14,14 +15,14 @@ const user = computed(() => page.props.auth?.user);
     <header class="guest_navbar py-4 px-4 lg:px-16 border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur-sm transition-all duration-300">
         <nav class="flex items-center justify-between">
             <div class="branding">
-                <Link href="/">Alsuwa E-Commerce</Link>
+                <Link href="/" class="flex items-center gap-x-2">
+                    <AppLogo />
+                </Link>
             </div>
 
             <div class="links flex items-center gap-8">
                 <Link href="/dashboard" v-if="user">Dashboard</Link>
-                <Link href="/shop">Shop</Link>
-                <Link href="/deals-page">Deals & Offers</Link>
-                <Link href="/business-community">Community</Link>
+                <Link href="/shop">Catalogue</Link>
                 <Link href="/contact">Contact</Link>
             </div>
 
@@ -30,14 +31,6 @@ const user = computed(() => page.props.auth?.user);
                     <Sun v-if="appearance === 'light'" class="icon sun-icon w-5 h-5" />
                     <Moon v-else class="icon moon-icon w-5 h-5" />
                 </button>
-
-                <Link href="/cart" title="Cart" class="cart relative">
-                    <ShoppingCart class="icon shopping-cart-icon" />
-                    <span class="cart_count absolute -right-2 -top-2 w-5 h-5 flex items-center justify-center text-xs font-medium bg-green-600 text-white rounded-full p-1">
-                        <!-- {{ cartStore.itemCount > 99 ? '99+' : cartStore.itemCount }} -->
-                          99
-                    </span>
-                </Link>
 
                 <div v-if="user" class="loggedin_user_menu"></div>
 
