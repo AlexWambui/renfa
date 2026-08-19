@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Modules\Product\Models\ProductCategory;
+use Illuminate\Support\Facades\Cache;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -42,6 +44,15 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'footer_product_categories' => function () {
+                return Cache::remember('footer_product_categories', 3600, function () {
+                    return ProductCategory::query()
+                        ->orderBy('name')
+                        ->select('id', 'slug', 'name')
+                        ->take(6)
+                        ->get();
+                });
+            }
         ];
     }
 }
