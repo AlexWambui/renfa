@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Concerns\HasUuid;
 use Modules\User\Enums\UserRoles;
 use Modules\User\Enums\UserStatuses;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -94,5 +95,53 @@ class User extends Authenticatable
         }
         
         return asset('assets/images/default-image.png');
+    }
+
+    public function scopeFilterByRole(Builder $query, string|int|null $role): Builder
+    {
+        // If role is empty string or null, don't filter
+        if ($role === null || $role === '' || $role === 'null') {
+            return $query;
+        }
+
+        // Handle numeric values
+        if (is_numeric($role)) {
+            return $query->where('role', (int) $role);
+        }
+
+        // Handle string labels (for direct label filtering)
+        $roleEnum = UserRoles::tryFromLabel($role);
+        if ($roleEnum) {
+            return $query->where('role', $roleEnum->value);
+        }
+
+        return $query;
+    }
+
+    public function scopeOrderByRolePriority(Builder $query): Builder
+    {
+        return $query->orderByRaw(
+            "CASE
+                WHEN role = ? THEN 1
+                WHEN role = ? THEN 2
+                WHEN role = ? THEN 3
+                WHEN role = ? THEN 4
+                ELSE 5
+            END ASC",
+            [
+                UserRoles::SUPER_ADMIN->value,
+                UserRoles::ADMIN->value,
+                UserRoles::CASHIER->value,
+                UserRoles::CUSTOMER->value,
+            ]
+        )->orderBy('name');
+    }
+
+    public function scopeSearch(Builder $query, string $term): Builder
+    {
+        return $query->where(function($query) use ($term) {
+            $query->where('name', 'LIKE', "%{$term}%")
+                ->orWhere('email', 'LIKE', "%{$term}%");
+        });
     }
 }
