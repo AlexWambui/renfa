@@ -10,8 +10,8 @@ import Input from '@/components/ui/input/Input.vue';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { usePriceFormatter } from '@/composables/usePriceFormatter';
 import productRoutes from '@/routes/products';
-import ProductsNav from '../components/ProductsNav.vue';
 import type { Product } from '@/types/product';
+import ProductsNav from '../components/ProductsNav.vue';
 
 const { formatPrice } = usePriceFormatter();
 
