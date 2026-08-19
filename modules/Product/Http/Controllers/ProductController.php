@@ -32,7 +32,7 @@ class ProductController extends Controller
             $query->where('is_active', $request->status === 'active');
         }
 
-        $products = $query->orderBy('name')->paginate(20);
+        $products = $query->orderBy('name')->paginate(50);
 
         return inertia('app/products/products/Index', [
             'products' => ProductIndexPageResource::collection($products),
