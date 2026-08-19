@@ -12,3 +12,4 @@ UI
 
 ❌ Make the navbar mobile responsive
 ❌ Categories Component: remove those white things next to the arrows
+❌ Buttons: correct the bg for buttons so they stop being white
