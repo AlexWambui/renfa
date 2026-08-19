@@ -10,6 +10,7 @@ interface Props {
         total_products: number;
         total_product_categories: number;
         total_users: number;
+        total_admins: number;
         total_cashiers: number;
         total_callbacks: number;
         total_unread_callbacks: number;
@@ -37,7 +38,7 @@ defineProps<Props>();
                     <p class="text-[24px] font-bold">{{ stats.total_users }}</p>
                     <p>Users</p>
                     <div class="extras">
-                        <span class="text-sm text-muted-foreground">{{ stats.total_cashiers }} Cashiers</span>
+                        <span class="text-sm text-muted-foreground">{{ stats.total_admins }} Admins & {{ stats.total_cashiers }} Cashiers</span>
                     </div>
                 </div>
 
