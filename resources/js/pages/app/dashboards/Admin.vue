@@ -33,7 +33,7 @@ defineProps<Props>();
         <div class="stats-wrapper">
             <h2 class="mb-4 font-medium">Platform Statistics</h2>
             <div class="stats grid gap-8 lg:grid-cols-6">
-                <div class="stat bg-blue-100 p-4 rounded-lg space-y-0.5">
+                <div class="stat border border-border p-4 rounded-lg space-y-0.5">
                     <p class="text-[24px] font-bold">{{ stats.total_users }}</p>
                     <p>Users</p>
                     <div class="extras">
@@ -41,7 +41,7 @@ defineProps<Props>();
                     </div>
                 </div>
 
-                <div class="stat bg-blue-100 p-4 rounded-lg space-y-0.5">
+                <div class="stat border border-border p-4 rounded-lg space-y-0.5">
                     <p class="text-[24px] font-bold">{{ stats.total_products }}</p>
                     <p>Products</p>
                     <div class="extras">
@@ -49,7 +49,7 @@ defineProps<Props>();
                     </div>
                 </div>
 
-                <div class="stat bg-blue-100 p-4 rounded-lg space-y-0.5">
+                <div class="stat border border-border p-4 rounded-lg space-y-0.5">
                     <p class="text-[24px] font-bold">{{ stats.total_callbacks }}</p>
                     <p>Callback Requests</p>
                     <div class="extras">
