@@ -6,7 +6,7 @@ enum UserRoles: int
 {
     case SUPER_ADMIN = 0;
     case ADMIN = 1;
-    case SELLER = 2;
+    case CASHIER = 2;
     case CUSTOMER = 3;
 
     public function label(): string
@@ -14,7 +14,7 @@ enum UserRoles: int
         return match($this) {
             self::SUPER_ADMIN => 'Super Admin',
             self::ADMIN => 'Admin',
-            self::SELLER => 'Seller',
+            self::CASHIER => 'Cashier',
             self::CUSTOMER => 'Customer',
         };
     }
