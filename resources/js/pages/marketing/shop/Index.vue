@@ -1,0 +1,107 @@
+<script setup lang="ts">
+import { router } from '@inertiajs/vue3';
+import { useDebounceFn } from '@vueuse/core';
+import { ref, watch, computed } from 'vue';
+import Pagination from '@/components/custom/Pagination.vue';
+import Input from '@/components/ui/input/Input.vue';
+import type { Product } from '@/types/product';
+import Categories from './Categories.vue';
+import shopPageRoutes from '@/routes/catalogue-page';
+
+interface Category {
+    id: number;
+    name: string;
+    slug: string;
+}
+
+interface Props {
+    products: {
+        data: Product[];
+        links: any[];
+        meta: {
+            current_page: number;
+            last_page: number;
+            per_page: number;
+            total: number;
+            links: any[];
+        };
+    };
+    product_categories: Category[];
+    filters: {
+        search?: string;
+    };
+}
+
+const props = defineProps<Props>();
+
+const search = ref(props.filters?.search || '');
+
+const debouncedSearch = useDebounceFn(() => {
+    router.get(shopPageRoutes.index().url, {
+        search: search.value,
+    }, {
+        preserveState: true,
+        replace: true,
+    });
+}, 300);
+
+watch(search, () => {
+    debouncedSearch();
+});
+
+const getDisplayRange = computed(() => {
+    const { current_page, per_page, total } = props.products.meta;
+    const start = (current_page - 1) * per_page + 1;
+    const end = Math.min(current_page * per_page, total);
+
+    return { start, end, total };
+});
+</script>
+
+<template>
+    <div class="search lg:w-[30dvw] lg:mx-auto py-4">
+        <Input
+            v-model="search"
+            type="text"
+            placeholder="Search products by name..."
+            class="rounded-full px-6 py-6"
+        />
+    </div>
+
+    <Categories :categories="product_categories" />
+
+    <div class="products-wrapper">
+        <div class="container-fluid">
+            <!-- Results count -->
+            <div v-if="products.data.length > 0" class="text-sm text-gray-500 mb-4">
+                Showing {{ getDisplayRange.start }} to {{ getDisplayRange.end }} 
+                of {{ getDisplayRange.total }} products
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                <div class="product" v-for="product in products.data" :key="product.id">
+                    <div class="image h-50 w-full">
+                        <img :src="product.thumbnail_url" :alt="product.name" class="w-full h-full object-cover" />
+                    </div>
+
+                    <div class="content p-2 space-y-2">
+                        <p class="capitalize font-bold">{{ product.name }}</p>
+                        <p class="font-bold">Ksh. {{ product.price }}</p>
+                        <p>{{ product.description }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div v-if="products.data.length === 0" class="text-center py-16">
+                <div class="text-gray-400 text-6xl mb-4">📦</div>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">No products found</h3>
+                <p class="text-gray-400">Try adjusting your search or filters</p>
+            </div>
+
+            <!-- Pagination -->
+            <Pagination :meta="products.meta" />
+        </div>
+    </div>
+</template>

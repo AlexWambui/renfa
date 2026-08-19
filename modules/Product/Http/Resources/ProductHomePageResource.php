@@ -27,14 +27,7 @@ class ProductHomePageResource extends JsonResource
             'is_new' => (bool) $this->is_new,
             'is_featured' => (bool) $this->is_featured,
             'is_active' => (bool) $this->is_active,
-            'images' => $this->whenLoaded('images', function() {
-                return $this->images->map(function($image) {
-                    return [
-                        'url' => asset('storage/products/' . $image->name),
-                        'alt' => $this->slug,
-                    ];
-                })->values()->toArray();
-            }, []),
+            'thumbnail_url' => $this->thumbnail_url
         ];
     }
 }

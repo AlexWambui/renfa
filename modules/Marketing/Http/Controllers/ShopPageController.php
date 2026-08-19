@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Modules\Product\Models\Product;
 use Modules\Product\Models\ProductCategory;
-use Modules\Product\Http\Resources\ProductIndexPageResource;
+use Modules\Product\Http\Resources\ProductHomePageResource;
 
 class ShopPageController extends Controller
 {
@@ -18,7 +18,7 @@ class ShopPageController extends Controller
             ->where('is_active', true)
             ->with('images')
             ->orderBy('name')
-            ->paginate(30);
+            ->paginate(50);
         
         $product_categories = ProductCategory::query()
             ->where('is_active', true)
@@ -27,7 +27,7 @@ class ShopPageController extends Controller
             ->get();
 
         return Inertia::render('marketing/shop/Index', [
-            'products' => ProductIndexPageResource::collection($products),
+            'products' => ProductHomePageResource::collection($products),
             'product_categories' => $product_categories,
             'filters' => [
                 'search' => $request->search,

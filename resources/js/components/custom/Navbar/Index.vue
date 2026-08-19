@@ -22,7 +22,7 @@ const user = computed(() => page.props.auth?.user);
 
             <div class="links flex items-center gap-8">
                 <Link href="/dashboard" v-if="user">Dashboard</Link>
-                <Link href="/shop">Catalogue</Link>
+                <Link href="/catalogue">Catalogue</Link>
                 <Link href="/contact">Contact</Link>
             </div>
 
