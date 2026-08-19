@@ -12,7 +12,7 @@ const user = computed(() => page.props.auth?.user);
 </script>
 
 <template>
-    <header class="guest_navbar py-4 px-4 lg:px-16 border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur-sm transition-all duration-300">
+    <header class="guest_navbar py-4 px-4 lg:px-16 sticky top-0 z-50 bg-accent text-accent-foreground backdrop-blur-sm transition-all duration-300">
         <nav class="flex items-center justify-between">
             <div class="branding">
                 <Link href="/" class="flex items-center gap-x-2">
@@ -35,7 +35,7 @@ const user = computed(() => page.props.auth?.user);
                 <div v-if="user" class="loggedin_user_menu"></div>
 
                 <div v-else class="auth_pages_links flex items-center gap-2">
-                    <Link href="/login" class="px-3 py-1.5 bg-foreground text-background font-medium tracking-wide rounded-sm hover:opacity-90">Login</Link>
+                    <Link href="/login" class="px-3 py-1.5 bg-accent-foreground text-accent font-bold tracking-wide rounded-sm hover:opacity-90">Login</Link>
                 </div>
             </div>
         </nav>

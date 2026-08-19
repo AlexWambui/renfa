@@ -5,6 +5,7 @@ namespace Modules\Marketing\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Modules\Product\Models\Product;
+use Modules\Product\Models\ProductCategory;
 use Modules\Product\Http\Resources\ProductHomePageResource;
 
 class HomePageController extends Controller
@@ -15,9 +16,12 @@ class HomePageController extends Controller
         
         $most_popular = $this->getMostPopularProducts();
 
+        $product_categories = ProductCategory::orderBy('name')->select('id', 'slug', 'name')->get();
+
         return Inertia::render('marketing/home/Index', [
             'new_arrivals' => ProductHomePageResource::collection($new_arrivals)->resolve(),
-            'most_popular' => ProductHomePageResource::collection($most_popular)->resolve()
+            'most_popular' => ProductHomePageResource::collection($most_popular)->resolve(),
+            'product_categories' => $product_categories
         ]);
     }
 

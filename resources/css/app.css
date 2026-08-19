@@ -47,7 +47,7 @@
 
     --background: #ffffff;
     --foreground: #211F20;
-    --accent: #378000;
+    --accent: #214c96;
     --accent-foreground: #fff;
     --secondary-accent: #B74A00;
     --muted-foreground: #6e6e73;
@@ -61,8 +61,8 @@
 .dark {
     --background: #131F24;
     --foreground: #FAF9F5;
-    --accent: #58CC02;
-    --accent-foreground: #000;
+    --accent: #214c96;
+    --accent-foreground: #fff;
     --secondary-accent: #FAC53A;
     --muted-foreground: #52656D;
     --highlight: #37464F;
