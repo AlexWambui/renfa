@@ -28,7 +28,8 @@ class DashboardController extends Controller
                 'user' => $user,
                 'stats' => [
                     'total_users' => User::where('role', '!=', UserRoles::SUPER_ADMIN)->count(),
-                    'total_cashiers' => User::where('role', '==', UserRoles::CASHIER)->count(),
+                    'total_admins' => User::where('role', '=', UserRoles::ADMIN)->count(),
+                    'total_cashiers' => User::where('role', '=', UserRoles::CASHIER)->count(),
                     'total_products' => Product::count(),
                     'total_product_categories' => ProductCategory::count(),
                 ]
