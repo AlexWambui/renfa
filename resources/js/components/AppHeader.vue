@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, LayoutGrid, Menu, Barcode, Users } from '@lucide/vue';
+import { BookOpen, LayoutGrid, Menu, Barcode, Users, PhoneCall } from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
@@ -37,8 +37,9 @@ import { getInitials } from '@/composables/useInitials';
 import { toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import productRoutes from '@/routes/products';
-import type { BreadcrumbItem, NavItem } from '@/types';
 import userRoutes from '@/routes/users';
+import type { BreadcrumbItem, NavItem } from '@/types';
+import contactMessageRoutes from '@/routes/contact-messages';
 
 const user = computed(() => page.props.auth.user);
 const isAdmin = computed(() => user.value?.role_label === 'Admin');
@@ -80,6 +81,11 @@ const mainNavItems = computed(() => {
                 href: productRoutes.index(),
                 icon: Barcode,
             },
+            {
+                title: 'Callbacks',
+                href: contactMessageRoutes.index(),
+                icon: PhoneCall,
+            },
         );
     }
 
@@ -94,6 +100,11 @@ const mainNavItems = computed(() => {
                 title: 'Products',
                 href: productRoutes.index(),
                 icon: Barcode,
+            },
+            {
+                title: 'Callbacks',
+                href: contactMessageRoutes.index(),
+                icon: PhoneCall,
             },
         );
     }

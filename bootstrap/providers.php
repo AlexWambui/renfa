@@ -5,6 +5,7 @@ use App\Providers\FortifyServiceProvider;
 use Modules\User\Providers\UserServiceProvider;
 use Modules\Product\Providers\ProductServiceProvider;
 use Modules\Marketing\Providers\MarketingServiceProvider;
+use Modules\ContactMessage\Providers\ContactMessageServiceProvider;
 
 return [
     AppServiceProvider::class,
@@ -14,4 +15,5 @@ return [
     ProductServiceProvider::class,
 
     MarketingServiceProvider::class,
+    ContactMessageServiceProvider::class,
 ];
