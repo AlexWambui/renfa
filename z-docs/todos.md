@@ -5,8 +5,8 @@
 ❌ Contact Us page
 ❌ Products: add functionality for detecting duplicate products
 ❌ Products: product category page / filter for categorized products
-❌ Dashboard: stats for the users and products
-❌ Users: show list of users and admins should be able to CRUD users.
+❌ Dashboard: stats for the users, products, callback requests
+✅ Users: show list of users and admins should be able to CRUD users
 
 UI
 
