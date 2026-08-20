@@ -233,35 +233,6 @@ watch(() => props.categories, checkScroll);
     right: -18px;
 }
 
-/* Fade on edges when arrows visible */
-.categories-wrapper::before,
-.categories-wrapper::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 30px;
-    pointer-events: none;
-    z-index: 5;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.categories-wrapper::before {
-    left: 30px;
-    background: linear-gradient(to right, white, transparent);
-}
-
-.categories-wrapper::after {
-    right: 30px;
-    background: linear-gradient(to left, white, transparent);
-}
-
-.categories-wrapper:has(.arrow.left:not([style*="display: none"]))::before,
-.categories-wrapper:has(.arrow.right:not([style*="display: none"]))::after {
-    opacity: 1;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
     .container-fluid {
