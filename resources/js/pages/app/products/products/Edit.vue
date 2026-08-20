@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Link, Head, useForm } from '@inertiajs/vue3';
 import { ImagePlus, X } from '@lucide/vue';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import InputError from '@/components/InputError.vue';
-import { Spinner } from '@/components/ui/spinner';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ref } from 'vue';
 import FormHeader from '@/components/custom/FormHeader.vue';
+import InputError from '@/components/InputError.vue';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Spinner } from '@/components/ui/spinner';
+import { Textarea } from '@/components/ui/textarea';
 import productRoutes from '@/routes/products';
 
 interface Category {
@@ -79,11 +79,14 @@ const handleImageChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
     const files = Array.from(target.files || []);
 
-    if (!files.length) return;
+    if (!files.length) {
+        return;
+    }
 
     if (images.value.length + files.length > MAX_IMAGES) {
         alert(`Max ${MAX_IMAGES} images allowed`);
         target.value = '';
+
         return;
     }
 
@@ -91,12 +94,15 @@ const handleImageChange = (e: Event) => {
         if (file.size > MAX_FILE_SIZE) {
             alert(`${file.name} exceeds 2MB`);
             target.value = '';
+
             return;
         }
     }
 
     files.forEach(file => {
-        if (!file.type.startsWith('image/')) return;
+        if (!file.type.startsWith('image/')) {
+            return;
+        }
 
         images.value.push({
             file,
