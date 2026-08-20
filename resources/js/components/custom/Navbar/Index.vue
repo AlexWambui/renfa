@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Link, usePage, router } from '@inertiajs/vue3'; // 🟢 CHANGED: Added router import
-import { Sun, Moon, Menu, X, LogOut } from '@lucide/vue'; // 🟢 CHANGED: Added LogOut icon
+import { Link, usePage, router } from '@inertiajs/vue3';
+import { Sun, Moon, Menu, X, LogOut } from '@lucide/vue';
 import { computed, ref } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import { useAppearance } from '@/composables/useAppearance';
@@ -23,7 +23,6 @@ const closeMobileMenu = () => {
     isMobileMenuOpen.value = false;
 };
 
-// 🟢 ADDED: Logout function
 const logout = () => {
     router.post('/logout');
 };
@@ -53,7 +52,6 @@ const logout = () => {
                     <Moon v-else class="icon moon-icon w-5 h-5" />
                 </button>
 
-                <!-- 🟢 CHANGED: Show Logout button when user is logged in -->
                 <div v-if="user" class="flex items-center gap-2">
                     <button 
                         @click="logout" 
@@ -64,7 +62,6 @@ const logout = () => {
                     </button>
                 </div>
 
-                <!-- 🟢 CHANGED: Show Login button when user is NOT logged in -->
                 <div v-else class="auth_pages_links flex items-center gap-2">
                     <Link href="/login" class="px-3 py-1.5 bg-accent-foreground text-accent font-bold tracking-wide rounded-sm hover:opacity-90">Login</Link>
                 </div>
@@ -127,7 +124,6 @@ const logout = () => {
                 <!-- Divider -->
                 <div class="border-t border-accent-foreground/10 my-1"></div>
 
-                <!-- 🟢 CHANGED: Auth Links in mobile menu -->
                 <div v-if="!user" class="flex flex-col space-y-2">
                     <Link 
                         href="/login" 
@@ -138,7 +134,6 @@ const logout = () => {
                     </Link>
                 </div>
                 
-                <!-- 🟢 CHANGED: Logout button in mobile menu -->
                 <div v-else class="flex flex-col space-y-2">
                     <button 
                         @click="logout"
