@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head, Link } from '@inertiajs/vue3';
+import FormHeader from '@/components/custom/FormHeader.vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
-import usersRoutes from '@/routes/users';
+import userRoutes from '@/routes/users';
 
 interface Props {
     user: {
@@ -62,12 +63,9 @@ defineOptions({
     <Head title="Edit User" />
 
     <div class="form edit-user">
-        <div class="header">
-            <Link :href="usersRoutes.index().url" class="back-link">&larr;</Link>
-            <h2>Edit User</h2>
-        </div>
+        <FormHeader :backUrl="userRoutes.index().url" title="Edit user" />
 
-        <Form :action="usersRoutes.update(userData.uuid).url" method="put" v-slot="{ errors, processing }">
+        <Form :action="userRoutes.update(userData.uuid).url" method="put" v-slot="{ errors, processing }">
             <div class="section-title">Basic Information</div>
             
             <div class="inputs-group-wrapper">
@@ -173,7 +171,7 @@ defineOptions({
                     Update User
                 </Button>
 
-                <Link :href="usersRoutes.index().url">
+                <Link :href="userRoutes.index().url">
                     <Button type="button" variant="outline">
                         Cancel and return to users
                     </Button>

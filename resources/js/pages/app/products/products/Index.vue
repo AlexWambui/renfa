@@ -254,7 +254,7 @@ const truncateDescription = (text: string, maxLength: number = 60): string => {
                     <TableCell>{{ product.sku ?? '-' }}</TableCell>
                     <TableCell>{{ formatPrice(product.price) }}</TableCell>
                     <TableCell 
-                        class="description-col max-w-[200px] truncate cursor-help" 
+                        class="description-col max-w-50 truncate cursor-help" 
                         :title="product.description || 'No description'"
                     >
                         {{ truncateDescription(product.description, 60) }}
