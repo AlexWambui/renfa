@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
-import { Pencil, Trash2, Loader2 } from '@lucide/vue';
+import { Pencil, Trash2, Loader2, AlertCircle } from '@lucide/vue';
 import { useDebounceFn } from '@vueuse/core';
 import { ref, watch, computed } from 'vue';
 import DeleteConfirmationDialog from '@/components/custom/DeleteConfirmation.vue';
@@ -31,12 +31,39 @@ interface Props {
         search?: string;
         status?: string;
     };
+    duplicate_product_ids?: number[];
 }
 
 const props = defineProps<Props>();
 
 const search = ref(props.filters?.search || '');
 const toggling = ref<{ id: number; attribute: string } | null>(null);
+
+// Create a set of duplicate IDs for faster lookup
+const duplicateIdsSet = computed(() => {
+    return new Set(props.duplicate_product_ids || []);
+});
+
+// Check if a product is a duplicate
+const isDuplicate = (productId: number): boolean => {
+    return duplicateIdsSet.value.has(productId);
+};
+
+// Count total duplicate products
+const duplicateCount = computed(() => {
+    return duplicateIdsSet.value.size;
+});
+
+// Get duplicate products count with duplicates count
+const duplicateSummary = computed(() => {
+    const duplicates = props.duplicate_product_ids || [];
+    const uniqueDuplicates = new Set(duplicates);
+
+    return {
+        totalDuplicates: duplicates.length, // Total duplicate entries
+        uniqueGroups: uniqueDuplicates.size, // Number of unique products with duplicates
+    };
+});
 
 const debouncedSearch = useDebounceFn(() => {
     router.get(productRoutes.index().url, {
@@ -120,6 +147,18 @@ const isLoading = (product: Product, attribute: string) => {
     return toggling.value?.id === product.id && toggling.value?.attribute === attribute;
 };
 
+const truncateDescription = (text: string, maxLength: number = 60): string => {
+    if (!text) {
+        return '-';
+    }
+
+    if (text.length <= maxLength) {
+        return text;
+    }
+
+    return text.substring(0, maxLength) + '...';
+};
+
 // const getTagLabel = (type: string, product: Product) => {
 //     const attribute = type as 'is_featured' | 'is_new' | 'is_active';
 
@@ -146,6 +185,10 @@ const isLoading = (product: Product, attribute: string) => {
     <div class="app-header">
         <div class="info">
             <h1 class="title">Products</h1>
+            <span v-if="duplicateCount > 0" class="duplicate-badge mt-1 flex items-center gap-1">
+                <AlertCircle class="w-4 h-4" />
+                {{ duplicateCount }} duplicate{{ duplicateCount > 1 ? 's' : '' }} found
+            </span>
         </div>
 
         <div class="search">
@@ -163,6 +206,18 @@ const isLoading = (product: Product, attribute: string) => {
         </div>
     </div>
 
+    <!-- Duplicate warning banner -->
+    <div v-if="duplicateCount > 0" class="duplicate-warning-banner mb-4">
+        <div class="flex items-center gap-2 text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-4 py-3">
+            <AlertCircle class="w-5 h-5 shrink-0" />
+            <span>
+                <strong>{{ duplicateCount }}</strong> duplicate product{{ duplicateCount > 1 ? 's' : '' }} found. 
+                Products with the same name, description, and price are highlighted in red.
+                <span class="text-sm text-amber-600 ml-2">({{ duplicateSummary.uniqueGroups }} unique product{{ duplicateSummary.uniqueGroups > 1 ? 's' : '' }} with duplicates)</span>
+            </span>
+        </div>
+    </div>
+
     <div class="table-wrapper">
         <Table>
             <TableHeader>
@@ -172,7 +227,7 @@ const isLoading = (product: Product, attribute: string) => {
                     <TableHead>Product</TableHead>
                     <TableHead>SKU</TableHead>
                     <TableHead>Price (Ksh)</TableHead>
-                    <TableHead>Stock</TableHead>
+                    <TableHead class="description-col">Description</TableHead>
                     <TableHead>Category</TableHead>
                     <TableHead class="tags">Tags</TableHead>
                     <TableHead class="actions">Actions</TableHead>
@@ -180,13 +235,30 @@ const isLoading = (product: Product, attribute: string) => {
             </TableHeader>
 
             <TableBody>
-                <TableRow v-for="(product, index) in products.data" :key="product.id">
+                <TableRow 
+                    v-for="(product, index) in products.data" 
+                    :key="product.id"
+                    :class="{
+                        'duplicate-product-row bg-red-50 hover:bg-red-100': isDuplicate(product.id)
+                    }"
+                >
                     <TableCell class="id">{{ (products.meta.current_page - 1) * products.meta.per_page + index + 1 }}</TableCell>
                     <TableCell class="w-20"><img :src="product.thumbnail_url" :alt="product.slug"></TableCell>
-                    <TableCell class="max-w-30 overflow-hidden text-ellipsis cursor-help" :title="product.name">{{ product.name }}</TableCell>
+                    <TableCell class="max-w-30 overflow-hidden text-ellipsis cursor-help" :title="product.name">
+                        {{ product.name }}
+                        <!-- Duplicate indicator -->
+                        <span v-if="isDuplicate(product.id)" class="ml-2 text-xs text-red-600 font-bold">
+                            ⚠️ Duplicate
+                        </span>
+                    </TableCell>
                     <TableCell>{{ product.sku ?? '-' }}</TableCell>
                     <TableCell>{{ formatPrice(product.price) }}</TableCell>
-                    <TableCell>{{ product.stock ?? 0 }}</TableCell>
+                    <TableCell 
+                        class="description-col max-w-[200px] truncate cursor-help" 
+                        :title="product.description || 'No description'"
+                    >
+                        {{ truncateDescription(product.description, 60) }}
+                    </TableCell>
                     <TableCell>{{ product.category_name }}</TableCell>
                     <TableCell class="tags min-w-50 w-45">
                         <div class="tags-wrapper flex flex-wrap gap-4">
@@ -262,5 +334,78 @@ const isLoading = (product: Product, attribute: string) => {
         <p v-if="hasActiveFilters" class="filtered-results">
             Filtered results
         </p>
+        <p v-if="duplicateCount > 0" class="duplicate-summary">
+            ⚠️ {{ duplicateCount }} duplicate{{ duplicateCount > 1 ? 's' : '' }} detected
+        </p>
     </div>
 </template>
+
+<style scoped>
+.description-col {
+    max-width: 200px;
+    min-width: 120px;
+    width: 200px;
+}
+
+/* Truncate description text */
+.description-col.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Duplicate product row styling */
+.duplicate-product-row {
+    background-color: rgb(254, 242, 242) !important; /* red-50 */
+    border-left: 3px solid #dc2626; /* red-600 */
+}
+
+.duplicate-product-row:hover {
+    background-color: rgb(254, 226, 226) !important; /* red-100 */
+}
+
+/* Duplicate badge styling */
+.duplicate-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Duplicate summary styling */
+.duplicate-summary {
+    color: #b91c1c;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Warning banner styling */
+.duplicate-warning-banner {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .description-col {
+        max-width: 100px;
+        min-width: 80px;
+        width: 100px;
+    }
+}
+</style>
