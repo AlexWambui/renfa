@@ -5,7 +5,6 @@ namespace Modules\Marketing\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Modules\Product\Models\Product;
-use Modules\Product\Models\ProductCategory;
 use Modules\Product\Http\Resources\ProductHomePageResource;
 
 class HomePageController extends Controller
@@ -16,31 +15,28 @@ class HomePageController extends Controller
         
         $most_popular = $this->getMostPopularProducts();
 
-        $product_categories = ProductCategory::orderBy('name')->select('id', 'slug', 'name')->get();
-
         return Inertia::render('marketing/home/Index', [
             'new_arrivals' => ProductHomePageResource::collection($new_arrivals)->resolve(),
             'most_popular' => ProductHomePageResource::collection($most_popular)->resolve(),
-            'product_categories' => $product_categories
         ]);
     }
 
     private function getMostPopularProducts()
     {
-        // Get up to 4 featured products
+        // Get up to 8 featured products
         $featured = Product::where('is_featured', true)
             ->where('is_active', true)
             ->with('images')
-            ->limit(4)
+            ->limit(8)
             ->get();
 
         // If we have 4 featured products, return them
-        if ($featured->count() >= 4) {
+        if ($featured->count() >= 8) {
             return $featured;
         }
 
         // If we have less than 4 featured, get the remaining from random products
-        $needed = 4 - $featured->count();
+        $needed = 8 - $featured->count();
         
         $random = Product::where('is_active', true)
             ->where('is_featured', false) // Exclude featured products

@@ -54,7 +54,7 @@ onUnmounted(() => {
     <section class="Hero">
         <div class="container-fluid grid lg:grid-cols-2 gap-8 items-center">
             <div class="text space-y-4">
-                <h1 class="text-heading-text lg:text-l-text font-bold">Molds & Machinery</h1>
+                <h1 class="text-heading-text lg:text-l-text font-bold uppercase">Molds & Machinery</h1>
                 <p class="lg:w-[90%]">Plastic, ABS and steel moulds for pavers, balusters, ventilation blocks, cladding and cast-concrete garden pieces - plus the mixers, vibrators and oxide pigments to run a full production line. All held in stock in Nairobi, ready to move.</p>
             </div>
 
