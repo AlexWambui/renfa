@@ -15,6 +15,12 @@ class ShopPageController extends Controller
     {
         $products = Product::query()
             ->search($request->search)
+            ->when($request->category, function ($query, $category) {
+                // Filter by category slug
+                return $query->whereHas('category', function ($q) use ($category) {
+                    $q->where('slug', $category);
+                });
+            })
             ->where('is_active', true)
             ->with('images')
             ->orderBy('name')
@@ -31,6 +37,7 @@ class ShopPageController extends Controller
             'product_categories' => $product_categories,
             'filters' => [
                 'search' => $request->search,
+                'category' => $request->category,
             ]
         ]);
     }

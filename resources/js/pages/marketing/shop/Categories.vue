@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 
-defineProps<{
+const props = defineProps<{
     categories: Array<{
         id: number;
         slug: string;
         name: string;
     }>;
+    selectedCategory?: string;
+}>();
+
+const emit = defineEmits<{
+    (e: 'select-category', slug: string): void;
 }>();
 
 const scrollContainer = ref<HTMLDivElement | null>(null);
@@ -40,6 +45,16 @@ const scroll = (direction: 'left' | 'right') => {
     });
 };
 
+const handleCategoryClick = (slug: string, event: Event) => {
+    event.preventDefault(); // Prevent default anchor navigation
+    emit('select-category', slug);
+};
+
+const handleAllProductsClick = (event: Event) => {
+    event.preventDefault(); // Prevent default anchor navigation
+    emit('select-category', '');
+};
+
 // Check on mount and when window resizes
 onMounted(() => {
     checkScroll();
@@ -54,7 +69,7 @@ onUnmounted(() => {
 });
 
 // Check whenever categories change
-watch(() => scrollContainer.value, checkScroll);
+watch(() => props.categories, checkScroll);
 </script>
 
 <template>
@@ -80,12 +95,19 @@ watch(() => scrollContainer.value, checkScroll);
                     class="categories-scroll"
                     @scroll="checkScroll"
                 >
-                    <a href="/" class="category-link">All Products</a>
+                    <a 
+                        href="/" 
+                        class="category-link"
+                        @click="handleAllProductsClick"
+                    >
+                        All Products
+                    </a>
                     <a 
                         v-for="category in categories" 
                         :key="category.id"
                         :href="`/categories/${category.slug}`"
                         class="category-link"
+                        @click="handleCategoryClick(category.slug, $event)"
                     >
                         {{ category.name }}
                     </a>

@@ -4,9 +4,9 @@ import { useDebounceFn } from '@vueuse/core';
 import { ref, watch, computed } from 'vue';
 import Pagination from '@/components/custom/Pagination.vue';
 import Input from '@/components/ui/input/Input.vue';
+import shopPageRoutes from '@/routes/catalogue-page';
 import type { Product } from '@/types/product';
 import Categories from './Categories.vue';
-import shopPageRoutes from '@/routes/catalogue-page';
 
 interface Category {
     id: number;
@@ -29,32 +29,66 @@ interface Props {
     product_categories: Category[];
     filters: {
         search?: string;
+        category?: string;
     };
 }
 
 const props = defineProps<Props>();
 
 const search = ref(props.filters?.search || '');
+const selectedCategory = ref(props.filters?.category || '');
 
 const debouncedSearch = useDebounceFn(() => {
     router.get(shopPageRoutes.index().url, {
         search: search.value,
+        category: selectedCategory.value || undefined,
     }, {
         preserveState: true,
         replace: true,
     });
 }, 300);
 
+const selectCategory = (categorySlug: string) => {
+    selectedCategory.value = categorySlug;
+    // Reset to page 1 when changing category
+    router.get(shopPageRoutes.index().url, {
+        search: search.value,
+        category: categorySlug || undefined,
+    }, {
+        preserveState: true,
+        replace: true,
+    });
+};
+
+const clearFilters = () => {
+    search.value = '';
+    selectedCategory.value = '';
+    router.get(shopPageRoutes.index().url, {}, {
+        preserveState: true,
+        replace: true,
+    });
+};
+
 watch(search, () => {
     debouncedSearch();
+});
+
+watch(() => props.filters.category, (newCategory) => {
+    if (selectedCategory.value !== newCategory) {
+        selectedCategory.value = newCategory || '';
+    }
 });
 
 const getDisplayRange = computed(() => {
     const { current_page, per_page, total } = props.products.meta;
     const start = (current_page - 1) * per_page + 1;
     const end = Math.min(current_page * per_page, total);
-
+    
     return { start, end, total };
+});
+
+const hasActiveFilters = computed(() => {
+    return !!search.value || !!selectedCategory.value;
 });
 </script>
 
@@ -68,7 +102,24 @@ const getDisplayRange = computed(() => {
         />
     </div>
 
-    <Categories :categories="product_categories" />
+    <div v-if="hasActiveFilters" class="container-fluid mb-4">
+        <div class="flex items-center gap-3 flex-wrap">
+            <span class="text-sm text-gray-600">Active filters:</span>
+            <span v-if="selectedCategory" class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                Category: {{ product_categories.find(c => c.slug === selectedCategory)?.name }}
+                <button @click="selectCategory(selectedCategory)" class="ml-1 hover:text-blue-600">×</button>
+            </span>
+            <button 
+                v-if="hasActiveFilters" 
+                @click="clearFilters" 
+                class="text-sm text-gray-500 hover:text-gray-700 underline"
+            >
+                Clear all filters
+            </button>
+        </div>
+    </div>
+
+    <Categories :categories="product_categories" :selected-category="selectedCategory" @select-category="selectCategory"  />
 
     <div class="products-wrapper">
         <div class="container-fluid">
