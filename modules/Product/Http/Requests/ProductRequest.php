@@ -28,7 +28,6 @@ class ProductRequest extends FormRequest
                 'required', 
                 'string', 
                 'max:200',
-                Rule::unique('products', 'name')->ignore($this->route('product')?->id)
             ],
             'sku' => [
                 'nullable', 
