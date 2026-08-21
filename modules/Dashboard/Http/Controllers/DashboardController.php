@@ -20,7 +20,15 @@ class DashboardController extends Controller
         if ($user->role === UserRoles::SUPER_ADMIN) {
             return inertia('app/dashboards/SuperAdmin', [
                 'user' => $user,
-                'stats' => ''
+                'stats' => [
+                    'total_users' => User::where('role', '!=', UserRoles::SUPER_ADMIN)->count(),
+                    'total_admins' => User::where('role', '=', UserRoles::ADMIN)->count(),
+                    'total_cashiers' => User::where('role', '=', UserRoles::CASHIER)->count(),
+                    'total_products' => Product::count(),
+                    'total_product_categories' => ProductCategory::count(),
+                    'total_callbacks' => ContactMessage::count(),
+                    'total_unread_callbacks' => ContactMessage::where('is_read', false)->count(),
+                ]
             ]);
         }
 
