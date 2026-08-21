@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use Modules\User\Http\Controllers\UserController;
 
-Route::prefix('users')
+Route::middleware('role:admin,super_admin')
+    ->prefix('users')
     ->name('users.')
     ->controller(UserController::class)
-    ->group(function()
+    ->group(function ()
 {
     Route::get('/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');

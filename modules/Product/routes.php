@@ -4,18 +4,33 @@ use Illuminate\Support\Facades\Route;
 use Modules\Product\Http\Controllers\ProductController;
 use Modules\Product\Http\Controllers\ProductCategoryController;
 
-Route::get('products', [ProductController::class, 'index'])->name('products.index');
-Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
-Route::post('products', [ProductController::class, 'store'])->name('products.store');
-Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
-Route::post('/products/{product}/toggle-attribute', [ProductController::class, 'toggleAttribute'])
-    ->name('products.toggle-attribute');
-Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+Route::middleware('role:admin,super_admin')->group(function ()
+{
+    Route::prefix('products')
+        ->name('products.')
+        ->controller(ProductController::class)
+        ->group(function ()
+    {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{product}/edit', 'edit')->name('edit');
+        Route::put('/{product}', 'update')->name('update');
+        Route::post('/products/{product}/toggle-attribute', 'toggleAttribute')->name('toggle-attribute');
+        Route::delete('/{product}', 'destroy')->name('destroy');
+    });
+    
+    Route::prefix('product-categories')
+        ->name('product-categories.')
+        ->controller(ProductCategoryController::class)
+        ->group(function ()
+    {
+        Route::get('/', [ProductCategoryController::class, 'index'])->name('index');
+        Route::get('/create', [ProductCategoryController::class, 'create'])->name('create');
+        Route::post('/', [ProductCategoryController::class, 'store'])->name('store');
+        Route::get('/{product_category}/edit', [ProductCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{product_category}', [ProductCategoryController::class, 'update'])->name('update');
+        Route::delete('/{product_category}', [ProductCategoryController::class, 'destroy'])->name('destroy');
+    });
+});
 
-Route::get('product-categories', [ProductCategoryController::class, 'index'])->name('product-categories.index');
-Route::get('product-categories/create', [ProductCategoryController::class, 'create'])->name('product-categories.create');
-Route::post('product-categories', [ProductCategoryController::class, 'store'])->name('product-categories.store');
-Route::get('product-categories/{product_category}/edit', [ProductCategoryController::class, 'edit'])->name('product-categories.edit');
-Route::put('product-categories/{product_category}', [ProductCategoryController::class, 'update'])->name('product-categories.update');
-Route::delete('product-categories/{product_category}', [ProductCategoryController::class, 'destroy'])->name('product-categories.destroy');
