@@ -8,6 +8,7 @@
 ✅ Dashboard: stats for the users, products, callback requests
 ✅ Users: show list of users and admins should be able to CRUD users
 ❌ Super Admin: work on super admins panel
+❌ Admin: work on admins panel
 ❌ Cashiers: work on cashiers panel
 ❌ Customer: work on customers panel
 
