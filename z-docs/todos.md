@@ -8,12 +8,17 @@
 ✅ Dashboard: stats for the users, products, callback requests
 ✅ Users: show list of users and admins should be able to CRUD users
 ❌ Super Admin: work on super admins panel
-❌ Admin: work on admins panel
-❌ Cashiers: work on cashiers panel
+✅ Admin: work on admins panel
+✅ Cashiers: work on cashiers panel
 ❌ Customer: work on customers panel
+
+Cashiers
+
+❌ Can CRUD a quote for products a customer orders
 
 UI
 
 ✅ Make the navbar mobile responsive
 ✅ Categories Component: remove those white things next to the arrows
 ✅ Buttons: correct the bg for buttons so they stop being white
+❌ Add an x button to search bars to make it easy to clear the search field
