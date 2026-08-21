@@ -36,14 +36,15 @@ import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
 import { toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
+import contactMessageRoutes from '@/routes/contact-messages';
 import productRoutes from '@/routes/products';
 import userRoutes from '@/routes/users';
 import type { BreadcrumbItem, NavItem } from '@/types';
-import contactMessageRoutes from '@/routes/contact-messages';
 
 const user = computed(() => page.props.auth.user);
 const isAdmin = computed(() => user.value?.role_label === 'Admin');
 const isSuperAdmin = computed(() => user.value?.role_label === 'Super Admin');
+const isCashier = computed(() => user.value?.role_label === 'Cashier');
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -105,6 +106,16 @@ const mainNavItems = computed(() => {
                 title: 'Callbacks',
                 href: contactMessageRoutes.index(),
                 icon: PhoneCall,
+            },
+        );
+    }
+
+    if (isCashier.value) {
+        items.push(
+            {
+                title: 'Products',
+                href: productRoutes.index(),
+                icon: Barcode,
             },
         );
     }

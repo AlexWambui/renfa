@@ -42,7 +42,10 @@ class DashboardController extends Controller
         if ($user->role === UserRoles::CASHIER) {
             return inertia('app/dashboards/Cashier', [
                 'user' => $user,
-                'stats' => ''
+                'stats' => [
+                    'total_products' => Product::where('is_active', true)->count(),
+                    'total_product_categories' => ProductCategory::where('is_active', true)->count(),
+                ]
             ]);
         }
 
