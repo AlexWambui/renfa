@@ -33,8 +33,8 @@ class UserSeeder extends Seeder
                 'password' => $password,
             ],
             [
-                'name' => 'Seller User',
-                'email' => 'seller@gmail.com',
+                'name' => 'Cashier User',
+                'email' => 'cashier@gmail.com',
                 'role' => 2,
                 'email_verified_at' => now(),
                 'password' => $password,
