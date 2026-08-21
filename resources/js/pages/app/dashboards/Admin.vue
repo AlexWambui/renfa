@@ -24,14 +24,14 @@ defineProps<Props>();
     <Head title="Admin Dashboard" />
 
     <div class="Dashboard AdminDashboard space-y-12">
-        <div class="header">
+        <section class="header">
             <div class="flex items-center gap-4">
                 <p>Hi {{ user.name }}</p>
                 <span class="text-xs text-blue-900 bg-blue-100 py-1 px-2 rounded-sm">{{ user.role_label }}</span>
             </div>
-        </div>
+        </section>
 
-        <div class="stats-wrapper">
+        <section class="stats-wrapper">
             <h2 class="mb-4 font-medium">Platform Statistics</h2>
             <div class="stats grid gap-8 lg:grid-cols-6">
                 <div class="stat border border-border p-4 rounded-lg space-y-0.5">
@@ -58,6 +58,6 @@ defineProps<Props>();
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Head, usePage, Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { usePriceFormatter } from '@/composables/usePriceFormatter';
 
@@ -70,8 +70,14 @@ const activeOrdersCount = computed(() => {
 });
 
 const activeOrdersText = computed(() => {
-    if (activeOrdersCount.value === 0) return null;
-    if (activeOrdersCount.value === 1) return '1 active order';
+    if (activeOrdersCount.value === 0) {
+        return null;
+    }
+
+    if (activeOrdersCount.value === 1) {
+        return '1 active order';
+    }
+
     return `${activeOrdersCount.value} active orders`;
 });
 </script>
